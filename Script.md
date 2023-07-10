@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Specify the log file directory
-LOG_DIR="/var/log/"
+LOG_DIR="/home/ec2-user/efs/logs/"
 
 # Create a log file name with the current date
 DATE=$(date +"%Y%m%d")
@@ -25,7 +25,7 @@ FULL_PATH="$LOG_DIR$LOG_FILE"
 # Create the log file if it doesn't exist
 if [ ! -f "$FULL_PATH" ]; then
     touch "$FULL_PATH"
-    chmod 644 "$FULL_PATH"
+    chmod 777 "$FULL_PATH"
 fi
 
 # Add a new log entry to the respective log file
