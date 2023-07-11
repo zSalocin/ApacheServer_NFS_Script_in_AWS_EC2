@@ -87,61 +87,85 @@ e execute a instancia, ira levar alguns segundos para a AWS inicializar a instan
 aguarde alguns segundo e a instancia estara pronta para uso
 **FOTO DA INSTANCIA EM RUNNING**
 
+-------editar acima
+
 ### Criando um Elastic IP
-Em EC2 procure no menu a esquerda Elastic IP
+- No menu EC2 procure no menu de servicos a esquerda pelo servico Elastic IP
 **FOTO DO MENU**
- após isso clique em alocar endereço IP elástico
+- No menu de Elastic IP clique em alocar endereço IP elástico
 **FOTO DO MENU DE IP**
-  verifique se a região está correta e ipv4 está selecionado, e clique em alocar, após isso clique sobre o endereço IP
+- No menu de cricao verifique se a região está correta e ipv4 está selecionado, e clique em alocar.
 **FOTO DA CRIAÇÃO**
- clique em ações selecione Associar endereço IP elástico, marque instancia e selecione a instancia criada previamente após isso clique em associar
+**EDITAR CASO NECESSARIO**
+- No menu de Elastic IP clique em ações selecione Associar endereço IP elástico, marque instancia e selecione a instancia criada previamente após isso clique em associar.
 
 ### Acessando a instancia via putty
-TODO
+**TODO**
 
 ### Instalando Apache em uma intancia EC2
-Após logar na instancia execute o comando:
+- Ao logar na instancia execute o comando abaixo para ganhar acesso como root.
 ```
 sudo su
 ```
-depois disso execute o comando para instalar o apache server e suas dependencias:
-```sudo yum install -y httpd```
-executando depois disso o comando para iniciar o apache server:
-```sudo systemctl enable --now httpd.service```
-após esse comando execute para verificar o status do apache server:
-```sudo systemctl status httpd```
-se o servidor estiver rodando corretamente agora deve ser possivel acessar a pagina de teste do apache atraves do ip elastico anexado a instancia.
+- Execute o comando para instalar o apache server e suas dependencias:
+```
+sudo yum install -y httpd
+```
+- Executando depois disso o comando para iniciar o apache server:
+```
+sudo systemctl enable --now httpd.service
+```
+- Execute para verificar o status do apache server:
+```
+sudo systemctl status httpd
+```
+- Caso o servidor esteja rodando corretamente agora deve ser possivel acessar a pagina de teste do apache atraves do ip elastico anexado a instancia.
 
 ### Criando um EFS(NSF SERVER)
-Busque por EFS na amazon AWS o serviço de arquivos de NFS escalavel da AWS
+- Busque por EFS na amazon AWS o serviço de arquivos de NFS escalavel da AWS
 **FOTO da aba**
-Na Pagina de EFS clique em criar sistema de arquivos
+- Na Pagina de EFS clique em criar sistema de arquivos
 **FOTO DA PAGINA**
-Escolha um nome para o EFS e selecione uma VPC(a mesma da instancia) e clique em criar
+- Escolha um nome para o EFS e selecione uma VPC(a mesma da instancia) e clique em criar
 **FOTO DA PAGINA DE CONFIG**
-após criado va em network dentro dos detalhes do EFS e altere os security group para o mesmo da instancia EC2
+- Uma vez criado o EFS navegue ate network dentro dos detalhes do EFS e altere os security group para aquele que foi criado anteriormente.
 **FOTOS DO CAMINHO E OPERAÇÃO**
 
 ### Criando uma pasta compartilhada EFS EC2
-acesse a instancia, e digite o comando para instalar as dependencias necessarias para acessar o efs na instancia do EC2:
-```sudo yum install -y amazon-efs-utils```
-após a instalação crie um diretorio para compartilhar entre a instancia EC2 e o EFS atraves do comando:
-```sudo mkdir /home/ec2-user/efs```
-após criar o diretorio e necessario montar o EFS atraves do comando:
-```sudo mount -t efs <EFS_FILE_SYSTEM_ID>:/ /home/ec2-user/efs```
-- `<EFS_FILE_SYSTEM_ID>` = os primeiros fs-xxxxxxxxx, ate o .efs
-apos montar o EFS crie um diretorio para armazenar os logs dentro do efs com o comando:
-```sudo mkdir /home/ec2-user/efs/logs```
+- Acesse a instancia, e digite o comando para instalar as dependencias necessarias para acessar o EFS na instancia do EC2:
+```
+sudo yum install -y amazon-efs-utils
+```
+- Uma vez que a instalação foi concluida, crie um diretorio para compartilhar entre a instancia EC2 e o EFS atraves do comando:
+```
+sudo mkdir /home/ec2-user/efs
+```
+- E necessario montar o EFS no diretorio atraves do comando:
+```
+sudo mount -t efs <EFS_FILE_SYSTEM_ID>:/ /home/ec2-user/efs
+```
+- `<EFS_FILE_SYSTEM_ID>` = o ID do EFS e composto por fs-xxxxxxxxx, ate o .efs
+
+- Uma vez concluido o processo de montagem do EFS crie um diretorio para armazenar os logs dentro do EFS com o comando:
+```
+sudo mkdir /home/ec2-user/efs/logs
+```
 
 ### Criando um Script
-crie um arquivo para criar o script atraves do comando
-```vi check.sh```
-precione "i" e copie o script feito anteriormente no editor de texto
-feche o editor de texto precione "esc" para entrar no modo edicao e digite wq e precione enter.
-teste o script executando-o pelo comando
-```sudo ~/check.sh```
-caso ocorra um erro por falta de permissao execute o comando:
-```sudo chmod 777 check.sh```
-e tente rodar o script novamente
+- Crie um arquivo .sh para criar o script e abra-o com o editor de texto padrao atraves do comando:
+```
+vi check.sh
+```
+- Precione "i" para entrar no modo edicao do editor.
+- Copie o script feito anteriormente no editor de texto.
+- Feche o editor de texto, para isso precione "esc" para entrar no modo de comando, digite wq e precione enter.
+- Habilite as permissaos necessarias para o Script, para isso execute o comando:
+```
+sudo chmod 777 check.sh
+```
+- Teste a execucao do script executando-o pelo comando:
+```
+sudo ~/check.sh
+```
 
 ### Utilizando Contrab para automatizar a execução do Script
