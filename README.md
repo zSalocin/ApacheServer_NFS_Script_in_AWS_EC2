@@ -1,95 +1,144 @@
-# ApacheServer_NFS_Script_in_AWS_EC2
+# Atividade Linux
 
-Instalando o Oracle Linux em uma VM (VirtualBox):
-Após instalar o VirtualBox, clique em "Novo" para criar uma nova máquina virtual (VM). Dê um nome para a VM e selecione o sistema operacional que será instalado. Escolha um nome de usuário e senha para o sistema operacional. Selecione a quantidade de RAM e o número de núcleos de processamento desejados, bem como o tamanho do disco rígido. Finalize a criação da VM.
+Repositorio para a atividade de Linux, do programa de bolsas da Compass UOL.
 
-Acesse as configurações da VM, vá para a seção de discos e selecione a imagem ISO para o primeiro disco. Em seguida, inicie a máquina virtual.
+**Objetivo**: Criar um ambiente AWS com uma instância EC2 e configurar o NFS para armazenar dados.
 
-Durante a instalação do Oracle Linux, selecione "start installation" e escolha o idioma desejado. Em seguida, selecione o disco de instalação. Caso ocorra algum erro, faça um refresh. Selecione a versão do Oracle Linux (com GUI, versão do servidor, ou mínima). Habilite a conexão com a internet e defina uma senha para o usuário root. Crie também um usuário comum para uso geral. Por fim, clique em "Begin".
+**Escopo**: A atividade incluirá a geração de uma chave pública de acesso, criação de uma instância EC2 com o sistema operacional Amazon Linux 2, geração de um endereço IP elástico e anexá-lo à instância EC2, liberação de portas de comunicação para acesso público, configuração do NFS, criação de um diretório com o nome do usuário no filesystem do NFS, instalação e configuração do Apache, criação de um script para validar se o serviço está online e enviar o resultado para o diretório NFS, e configuração da execução automatizada do script a cada 5 minutos.
 
-Após a conclusão da instalação, remova a imagem ISO da VM. Acesse as configurações da VM, vá para a seção de discos e remova o primeiro disco. Em seguida, clique no botão de reiniciar ("Reboot").
+**Referências**: [Documentação da Amazon Web Services](https://docs.aws.amazon.com/pt_br/index.html), [Documentação do Amazon Linux 2](https://docs.aws.amazon.com/pt_br/AWSEC2/latest/UserGuide/amazon-linux-2-virtual-machine.html), [Documentação do ApacheServer](https://docs.oracle.com/en/learn/apache-install/#introduction), [Documentação do Contrab](https://docs.oracle.com/en/learn/oracle-linux-crontab/#before-you-begin)
+---
+## Requisitos
 
--Instalando Apache
-primeiro e necesseario instalar o pacote httpd e suas dependencias atraves do comando:
+### Instancia AWS:
+- Chave pública para acesso ao ambiente
+- Amazon Linux 2
+    - t3.small
+    - 16 GB SSD
+- 1 Elastic IP associado a instancia
+- Portas de comunicação liberadas
+    - 22/TCP (SSH)
+    - 111/TCP e UDP (RPC)
+    - 2049/TCP/UDP (NFS)
+    - 80/TCP (HTTP)
+    - 443/TCP (HTTPS)
 
-sudo dnf install httpd
+### Configurações Linux:
 
-após a instalação e necessario habilitar o serviço
+- Configurar o NFS entregue;
+- Criar um diretorio dentro do filesystem do NFS com seu nome;
+- Subir um apache no servidor - o apache deve estar online e rodando;
+- Criar um script que valide se o serviço esta online e envie o resultado da validação para o seu diretorio no nfs;
+    - O script deve conter - Data HORA + nome do serviço + Status + mensagem personalizada de ONLINE ou offline;
+    - O script deve gerar 2 arquivos de saida: 1 para o serviço online e 1 para o serviço OFFLINE;
+    - Execução automatizada do script a cada 5 minutos.
+---
+## Passo a Passo
 
-sudo systemctl enable --now httpd.service
+### Gerando um par de chaves
 
-após habilitar cheque o status do serviço
+### Gerando uma chave publica a parte de uma chave privada
 
-sudo systemctl status httpd
+### Criando uma VPC
+Ao criar um VPC selecione o serviço de VPC
+# FOTO DO MENU
+ Criar VPC, e use o assistente para criar a VPC, Sub-nets, tabelas de roteamento e gateways de forma auomatica.
+ # FOTO DO ASSISTENTE
 
-Execute o comando abaixo para verificar o IP e tente-se conectar ao servidor Apache
+### Criando um SecurityGroup
+Em EC2 procure por SecurityGroup na barra de navegação a esquerda
+# FOTO DA BARRA
+ acesse, crie um novo security group de acordo com as portas requeridas no caso: 
+# EDITAR
+ Tipo | Protocolo | Intervalo de portas | Origem | Descrição
+    ---|---|---|---|---
+    SSH | TCP | 22 | 0.0.0.0/0 | SSH
+    TCP personalizado | TCP | 80 | 0.0.0.0/0 | HTTP
+    TCP personalizado | TCP | 443 | 0.0.0.0/0 | HTTPS
+    TCP personalizado | TCP | 111 | 0.0.0.0/0 | RPC
+    UDP personalizado | UDP | 111 | 0.0.0.0/0 | RPC
+    TCP personalizado | TCP | 2049 | 0.0.0.0/0 | NFS
+    UDP personalizado | UDP | 2049 | 0.0.0.0/0 | NFS
+# FOTO DO MENU DE SECURTY GROUP
 
-ip a s
 
-caso seja necessario abra a porta 80 para o serviço apache
-
-sudo firewall-cmd --add-service=http --permanent
-sudo firewall-cmd --reload
-
--Criando o Scrit
-No Terminal do linux crie um script com o editor de texto com o seguinte comando:
-
-vi checkapache.sh
-
-o editor de texto vi ira criar um arquivo .sh e abrir para edição, copie ou cole o script registrado no arquivo Script.md nesse diretorio, esse script ira verificar o status do apache e criar um arquivo de log por dia para as verificações.
-
--Criando uma VPC
-Ao criar um VPC selecione o serviço de VPC, Criar VPC, e use o assistente para criar a VPC, Sub-nets, tabelas de roteamento e gateways de forma auomatica.
-
--Criando um SecurityGroup
-Em EC2 procure por SecurityGroup na barra de navegação a esquerda, acesse, crie um novo security group de acordo com as portas requeridas no caso: 22/TCP, 111/TCP/UDP, 2049/TCP/UDP, 80/TCP, 443/TCP. Utilize a VPC padrão caso não haja uma VPC especifica.
-
--Criando uma instancia EC2 na AWS
+### Criando uma instancia EC2 na AWS
 No console procure pelo serviço de EC2 e clique para acessar.
-clique em criar uma instancia ou executar uma instancia para criar uma instancia, em tags adicione as tags necessarios caso haja alguma.
+clique em executar uma instancia para criar uma instancia
+# FOTO DO PAINEL EC2
+ em tags adicione as tags necessarios caso haja alguma.
+# FOTO TAGS
+Na imagem do sistema escolha Amazon Linux 2
+# FOTO DO LINUX 2
+ no tipo de instancia selecione a instancia desejada (no caso t3.small)
+# FOTO INSTANCIA
+  selecionar par de chave para ssh ou putty (cuidado ao criar o par de chave pois ele é unico e não recuperavel)
+# FOTO PAR DE CHAVE
 
-Na imagem do sistema escolha Amazon Linux 2, no tipo de instancia selecione a instancia desejada (no caso t3.small), crie um par de chave para ssh ou putty (cuidado ao criar o par de chave pois ele é unico e não recuperavel)
+em configuração de rede selecione a VPC
+# FOTO DA VPC
+selecionar grupo de segurança existente e selecione o grupo de segurança criado anteriormente
+# FOTO DO GRUPO DE SEGURAÇA
+após isso na aba configurar armazenamento escolha o tipo de disco e o tamanho do disco(no caso 16GB).
+# FOTO DO DISCO
+e execute a instancia, ira levar alguns segundos para a AWS inicializar a instancia.
+# FOTO DA INICIALIZAÇÃO
+aguarde alguns segundo e a instancia estara pronta para uso
+# FOTO DA INSTANCIA EM RUNNING
 
-em configuração de rede selecione, selecionar grupo de segurança existente e selecione o grupo de segurança criado anteriormente, após isso na aba configurar armazenamento escolha o tipo de disco e o tamanho do disco(no caso 16GB). e execute a instancia, ira levar alguns segundos para a AWS inicializar a instancia.
+### Criando um Elastic IP
+Em EC2 procure no menu a esquerda Elastic IP
+# FOTO DO MENU
+ após isso clique em alocar endereço IP elástico
+# FOTO DO MENU DE IP
+  verifique se a região está correta e ipv4 está selecionado, e clique em alocar, após isso clique sobre o endereço IP
+# FOTO DA CRIAÇÃO  
+ clique em ações selecione Associar endereço IP elástico, marque instancia e selecione a instancia criada previamente após isso clique em associar
 
--Criando um Elastic IP
-Em EC2 procure no menu a esquerda Elastic IP, após isso clique em alocar endereço IP elástico, verifique se a região está correta e ipv4 está selecionado, e clique em alocar, após isso clique sobre o endereço IP, clique em ações selecione Associar endereço IP elástico, marque instancia e selecione a instancia criada previamente após isso clique em associar
-
--Acessando a instancia via putty
+### Acessando a instancia via putty
 TODO
 
--Instalando Apache em uma intancia EC2
+### Instalando Apache em uma intancia EC2
 Após logar na instancia execute o comando:
-sudo su
-depois disso execute o comando:
-sudo yum install -y httpd
-para instalar o apache server e suas dependencias. executando depois disso o comando:
-sudo systemctl enable --now httpd.service
-para iniciar o apache server, após esse comando execute:
-sudo systemctl status httpd
-para verificar o status do apache server, se o servidor estiver rodando corretamente agora deve ser possivel acessar a pagina de teste do apache atraves do ip elastico anexado a instancia.
+`sudo su`
+depois disso execute o comando para instalar o apache server e suas dependencias:
+`sudo yum install -y httpd`
+executando depois disso o comando para iniciar o apache server:
+`sudo systemctl enable --now httpd.service`
+após esse comando execute para verificar o status do apache server:
+`sudo systemctl status httpd`
+se o servidor estiver rodando corretamente agora deve ser possivel acessar a pagina de teste do apache atraves do ip elastico anexado a instancia.
 
--Criando um EFS(NSF SERVER)
-na aba de buscar da AWS busque por EFS o serviço de arquivos de NFS escalavel da AWS, na pagina do EFS clique em criar sistema de arquivos, de um nome ao EFS e selecione uma VPC(a mesma da instancia) e clique em criar, após criado va em network dentro dos detalhes do EFS e altere os security group para o mesmo da instancia EC2
+### Criando um EFS(NSF SERVER)
+Busque por EFS na amazon AWS o serviço de arquivos de NFS escalavel da AWS
+# FOTO da aba
+Na Pagina de EFS clique em criar sistema de arquivos
+# FOTO DA PAGINA
+Escolha um nome para o EFS e selecione uma VPC(a mesma da instancia) e clique em criar
+# FOTO DA PAGINA DE CONFIG
+após criado va em network dentro dos detalhes do EFS e altere os security group para o mesmo da instancia EC2
+# FOTOS DO CAMINHO E OPERAÇÃO
 
--Criando uma pasta compartilhada EFS EC2
-acesse a instancia, e digite o comando:
-sudo yum install -y amazon-efs-utils
-para instalar as dependencias necessarias para acessar o efs na instancia do EC2, após a instalação crie um diretorio para compartilhar entre a instancia EC2 e o EFS atraves do comando:
-sudo mkdir /home/ec2-user/efs
+### Criando uma pasta compartilhada EFS EC2
+acesse a instancia, e digite o comando para instalar as dependencias necessarias para acessar o efs na instancia do EC2:
+`sudo yum install -y amazon-efs-utils`
+após a instalação crie um diretorio para compartilhar entre a instancia EC2 e o EFS atraves do comando:
+`sudo mkdir /home/ec2-user/efs`
 após criar o diretorio e necessario montar o EFS atraves do comando:
-sudo mount -t efs <EFS_FILE_SYSTEM_ID>:/ /home/ec2-user/efs
-<EFS_FILE_SYSTEM_ID> = os primeiros fs-xxxxxxxxx, ate o .efs
+`sudo mount -t efs <EFS_FILE_SYSTEM_ID>:/ /home/ec2-user/efs`
+- <EFS_FILE_SYSTEM_ID> = os primeiros fs-xxxxxxxxx, ate o .efs
 apos montar o EFS crie um diretorio para armazenar os logs dentro do efs com o comando:
-sudo mkdir /home/ec2-user/efs/logs
+`sudo mkdir /home/ec2-user/efs/logs`
 
--Criando um Script
+### Criando um Script
 crie um arquivo para criar o script atraves do comando
-vi check.sh
+`vi check.sh`
 precione "i" e copie o script feito anteriormente no editor de texto
 feche o editor de texto precione "esc" para entrar no modo edicao e digite wq e precione enter.
-teste o script exeutando-o pelo comando
-~/check.sh
+teste o script executando-o pelo comando
+`sudo ~/check.sh`
 caso ocorra um erro por falta de permissao execute o comando:
-chmod 777 check.sh
+`sudo chmod 777 check.sh`
 e tente rodar o script novamente
+
+### Utilizando Contrab para automatizar a execução do Script

@@ -33,4 +33,3 @@ echo "$(date): Apache server : $SERVER_STATUS : $STATUS_POST" >> "$FULL_PATH"
 
 # Display success message
 echo "Log entry added successfully to $FULL_PATH."
-
