@@ -101,7 +101,9 @@ TODO
 
 ### Instalando Apache em uma intancia EC2
 Após logar na instancia execute o comando:
-```sudo su```
+```
+sudo su
+```
 depois disso execute o comando para instalar o apache server e suas dependencias:
 ```sudo yum install -y httpd```
 executando depois disso o comando para iniciar o apache server:
