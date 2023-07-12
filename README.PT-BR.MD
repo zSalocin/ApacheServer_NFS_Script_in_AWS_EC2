@@ -1,101 +1,99 @@
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/README.md)
+[![en](https://img.shields.io/badge/lang-en-green.svg)](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/README.md)
 
-[![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/README.PT-BR.md)
+[![pt-br](https://img.shields.io/badge/lang-pt--br-red.svg)](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/README.PT-BR.md)
 
-# Linux Activity
+# Atividade Linux
 
-Repository for the Linux activity of the Compass UOL scholarship program.
+Repositorio para a atividade de Linux, do programa de bolsas da Compass UOL.
 
-**Objective**: Create an AWS environment with an EC2 instance and configure NFS to store data.
+**Objetivo**: Criar um ambiente AWS com uma instância EC2 e configurar o NFS para armazenar dados.
 
-**Scope**: The activity will include generating a public access key pair, creating an EC2 instance with the Amazon Linux 2 operating system, generating an elastic IP address and attaching it to the EC2 instance, opening communication ports for public access, configuring NFS, creating a directory with the user's name in the NFS filesystem, installing and configuring Apache, creating a script to validate if the service is online and sending the result to the NFS directory, and configuring automated execution of the script every 5 minutes.
+**Escopo**: A atividade incluirá a geração de uma chave pública de acesso, criação de uma instância EC2 com o sistema operacional Amazon Linux 2, geração de um endereço IP elástico e anexá-lo à instância EC2, liberação de portas de comunicação para acesso público, configuração do NFS, criação de um diretório com o nome do usuário no filesystem do NFS, instalação e configuração do Apache, criação de um script para validar se o serviço está online e enviar o resultado para o diretório NFS, e configuração da execução automatizada do script a cada 5 minutos.
 
-**References**: [Amazon Web Services Documentation](https://docs.aws.amazon.com/pt_br/index.html), [Amazon Linux 2 Documentation](https://docs.aws.amazon.com/pt_br/AWSEC2/latest/UserGuide/amazon-linux-2-virtual-machine.html), [ApacheServer Documentation](https://docs.oracle.com/en/learn/apache-install/#introduction), [Crontab Documentation](https://docs.oracle.com/en/learn/oracle-linux-crontab/#before-you-begin).
+**Referências**: [Documentação da Amazon Web Services](https://docs.aws.amazon.com/pt_br/index.html), [Documentação do Amazon Linux 2](https://docs.aws.amazon.com/pt_br/AWSEC2/latest/UserGuide/amazon-linux-2-virtual-machine.html), [Documentação do ApacheServer](https://docs.oracle.com/en/learn/apache-install/#introduction), [Documentação do Contrab](https://docs.oracle.com/en/learn/oracle-linux-crontab/#before-you-begin).
 
 ---
-## Requirements
+## Requisitos
 
-### AWS Instance:
-- Public key for accessing the environment
+### Instancia AWS:
+- Chave pública para acesso ao ambiente
 - Amazon Linux 2
     - t3.small
     - 16 GB SSD
-- 1 Elastic IP associated with the instance
-- Open communication ports
+- 1 Elastic IP associado a instancia
+- Portas de comunicação liberadas
     - 22/TCP (SSH)
     - 111/TCP e UDP (RPC)
     - 2049/TCP/UDP (NFS)
     - 80/TCP (HTTP)
     - 443/TCP (HTTPS)
 
-### Linux Configuration:
+### Configurações Linux:
 
-- Configure the delivered NFS;
-- Create a directory within the NFS filesystem with your name;
-- Set up an Apache server - the Apache server should be online and running;
-- Create a script that validates if the service is online and sends the validation result to your directory in NFS;
-    - The script should contain - DATE TIME + service name + status + custom message of ONLINE or offline;
-    - The script should generate 2 output files: 1 for the online service and 1 for the offline service;
-    - Automate the script execution every 5 minutes.
+- Configurar o NFS entregue;
+- Criar um diretorio dentro do filesystem do NFS com seu nome;
+- Subir um apache no servidor - o apache deve estar online e rodando;
+- Criar um script que valide se o serviço esta online e envie o resultado da validação para o seu diretorio no nfs;
+    - O script deve conter - Data HORA + nome do serviço + Status + mensagem personalizada de ONLINE ou offline;
+    - O script deve gerar 2 arquivos de saida: 1 para o serviço online e 1 para o serviço OFFLINE;
+    - Execução automatizada do script a cada 5 minutos.
 ---
-## Step by Step
+## Passo a Passo
 
-### Generating a Key Pair
-- In the EC2 menu, search for Key Pair in the left navigation bar.
-- In the Key Pair menu, click on `Create Key Pair`.
-- Enter a name for the key pair.
-- Keep the key pair type as `RSA`.
-- In the private key file format:
-    - Use .pen if using SSH;
-    - Use .ppk if using Putty.
-- Click on `Create Key Pair`.
+### Gerando um par de chaves
+- No menu EC2 procure por KeyPair na barra de navegação a esquerda.
+- No menu de KeyPair clique em `Criar par de chaves`.
+- Insira um nome para a chave.
+- Mantenha o tipo de par de chave como `RSA`.
+- Em formato de arquivo da chave privada:
+    - Use .pen caso faça uso do SSH;
+    - Use .ppk caso faça uso do Putty.
+- Clique em `Criar par de chaves`.
 
-### Generating a Public Key from a Private Key .pem
-- To generate the public key, execute the following command:
+### Gerando uma chave publica a parte de uma chave privada .pem
+- Para gerar a chave publica execute o comando:
 ```
 ssh-keygen -y -f private_key.pem > chave_publica.pub
 ```
-- `private_key.pem` = path to the .pem private key
+- `private_key.pem` = caminho da chave privada .pem
 
-### Generating a Public Key from a Private Key .ppk
-- If the Operating System is Windows
-    - Download and install [Puttygen](https://www.putty.org/)
-    - Click on `load` and select the .ppk private key.
-    - Click on `Save public key` and select a location.
-- If the Operating System is Linux
-    - Download Puttygen using the command
+### Gerando uma chave publica a parte de uma chave privada .ppk
+- Caso o Sistema Operacional seja Windows
+    - Baixe e instale o [Puttygen](https://www.putty.org/)
+    - Clique em `load` e selecione a chave privada .ppk
+    - Clique em `Save public key` e selecione um local
+- Caso o Sistema Operacional seja Linux
+    - Baixe o Puttygen atraves do comando 
     ```
     sudo yum install putty-tools
     ```
-    - Generate the public key using the command:
+    - Gere a chave publica atraves do comando:
      ```
     puttygen private_key.ppk -O public-openssh -o chave_publica.pub
     ```
-    - `private_key.ppk` = path to the .ppk private key
+    - `private_key.ppk` = caminho da chave privada .ppk
 
-### Creating a VPC
-- In AWS, search for VPC.
+### Criando uma VPC
+- Na AWS busque por VPC.
 **FOTO DO APP**
-- In the VPC menu, click on `Create VPC`.
+- No menu de VPC clique em `Criar VPC`.
 **FOTO DO MENU**
-- Select the `VPC and more` option in the creation menu to have AWS assist in creating the VPC.
-- Name the VPC, subnets, route tables, and network connections.
-- Keep the IPv4 CIDR block.
-- Keep the IPv6 CIDR block option as None.
-- Select the default tenancy.**FOTO DO ASSISTENTE****FOTO DO ASSISTENTE**
-- Select the Number of Availability Zones as two.
-- Select the Number of public and private subnets as two.**FOTO DO ASSISTENTE**
-- Select the NAT gateways as None.
-- Select the VPC endpoint as the S3 Gateway. **FOTO DO ASSISTENTE**
-- Enable DNS hostnames and DNS resolution. **FOTO DO ASSISTENTE**
-- Click on `Create VPC`.
-**FOTO DO ASSISTENTE**
+- Selecione no menu de criação a opção `VPC e muito mais` para que a AWS auxilie a criação da VPC.
+- Nomeie a VPC, Sub-redes, Tabelas de rotas e Conexões de rede.
+- Mantenha o Bloco CIDR IPv4.
+- Mantenha a opção de Nenhum bloco CIDR IPv6.
+- Selecione Locação como padrão**FOTO DO ASSISTENTE****FOTO DO ASSISTENTE**
+- Selecione o Número de zonas de disponibilidades como dois.
+- Selecione o Numero de sub-redes públicas e privadas como dois.**FOTO DO ASSISTENTE**
+- Selecione Gatways NAT como nenhum.
+- Selecione como Endpoint da VPC o Gateway do S3. **FOTO DO ASSISTENTE**
+- Habilite nomes de host DNS e resolução de DNS. **FOTO DO ASSISTENTE**
+- Clique em `Criar VPC`.
 
 ### Criando um SecurityGroup
 - No menu EC2 procure por SecurityGroup na barra de navegação a esquerda.
 **FOTO DA BARRA**
 - Acesse e clique em `Criar novo grupo de segurança`.
-**FOTO DA PAGINA C O BOTAO**
 - No menu de criação do SecurityGroup de um nome e uma descrição ao SecurityGroup.
 - Ainda no menu de criação de SegurityGroup selecione como VPC a VPC criada anteriormente.
 - Em regras de entrada, adicione regras para liberar as portas necessaria conforme a tabela abaixo:
@@ -115,8 +113,8 @@ UDP personalizado | UDP | 2049 | 0.0.0.0/0 | NFS
 
 ### Criando uma instancia EC2 na AWS
 - Na AWS busque pelo serviço de EC2 e acesse.
+**FOTO EC2 APP**
 - Clique em `executar uma instancia`.
-**FOTO DO PAINEL EC2**
 - Na aba de Configuração Nome e Tags adione o nome e tags necessarias.
 **FOTO TAGS**
 - Em imagens de aplicação e de sistema operacional, busque e selecione Amazon Linux 2.
@@ -132,18 +130,16 @@ UDP personalizado | UDP | 2049 | 0.0.0.0/0 | NFS
 - Na aba Configurar armazenamento selecione um disco de 16GB padrão gp2.
 **FOTO DO DISCO**
 - Ao terminar as configurações basta clicar em `Executar Instância` para iniciar a criação.
-**FOTO DA INICIALIZAÇÃO**
 - Aguarde alguns segundos, a AWS ira criar e iniciar a instancia.
 **FOTO DA INSTANCIA EM RUNNING**
 
 ### Criando um Elastic IP
 - No menu EC2 procure no menu de servicos a esquerda pelo servico Elastic IP.
-**FOTO DO MENU**
+**FOTO DO MENU MSM DO SC**
 - No menu de Elastic IP clique em alocar endereço IP elástico.
 **FOTO DO MENU DE IP**
 - No menu de crição verifique se a região está correta e IPv4 está selecionado, e clique em alocar.
 **FOTO DA CRIAÇÃO**
-**EDITAR CASO NECESSARIO**
 - No menu de Elastic IP clique em `Ações` selecione Associar endereço IP elástico, marque instancia e selecione a instancia criada previamente após isso clique em `Associar endereço de IP elástico`.
 
 ### Acessando a instancia via Putty
@@ -184,7 +180,6 @@ sudo systemctl status httpd
 
 ### Criando um EFS(NSF SERVER)
 - Busque por EFS na amazon AWS o serviço de arquivos de NFS escalavel da AWS.
-**FOTO da aba**
 - Na Pagina de EFS clique em `Criar sistema de arquivos`.
 **FOTO DA PAGINA**
 - Escolha um nome para o EFS e selecione uma VPC(a mesma da instancia) e clique em `Criar`.
