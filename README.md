@@ -113,15 +113,17 @@ ssh-keygen -y -f private_key.pem > chave_publica.pub
 - In the Security Group creation menu, give a name and description to the Security Group.
 - AIn the same Security Group creation menu, select the VPC created earlier.
 - In inbound rules, add rules to open the necessary ports according to the table below:
-Type | Protocol | Port Range | Source | Description
----|---|---|---|---
-SSH | TCP | 22 | 0.0.0.0/0 | SSH
-TCP personalizado | TCP | 80 | 0.0.0.0/0 | HTTP
-TCP personalizado | TCP | 443 | 0.0.0.0/0 | HTTPS
-TCP personalizado | TCP | 111 | 0.0.0.0/0 | RPC
-UDP personalizado | UDP | 111 | 0.0.0.0/0 | RPC
-TCP personalizado | TCP | 2049 | 0.0.0.0/0 | NFS
-UDP personalizado | UDP | 2049 | 0.0.0.0/0 | NFS
+
+| Type | Protocol | Port Range | Source | Description |
+| ---|---|---|---|--- |
+| SSH | TCP | 22 | 0.0.0.0/0 | SSH |
+| TCP personalizado | TCP | 80 | 0.0.0.0/0 | HTTP |
+| TCP personalizado | TCP | 443 | 0.0.0.0/0 | HTTPS |
+| TCP personalizado | TCP | 111 | 0.0.0.0/0 | RPC |
+| TCP personalizado | TCP | 2049 | 0.0.0.0/0 | NFS |
+| UDP personalizado | UDP | 111 | 0.0.0.0/0 | RPC |
+| UDP personalizado | UDP | 2049 | 0.0.0.0/0 | NFS |
+
 - Keep the default outbound rule to allow all traffic.
 
 ![SC_MENU](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/SC_MENU.png)
