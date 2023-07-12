@@ -73,28 +73,42 @@ ssh-keygen -y -f private_key.pem > chave_publica.pub
 
 ### Creating a VPC
 - In AWS, search for VPC.
+
 ![VPC_APP](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/VPC_APP.png)
+
 - In the VPC menu, click on `Create VPC`.
+
 ![VPC_ASSISTENTE](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/VPC_ASSISTENTE.png)
+
 - Select the `VPC and more` option in the creation menu to have AWS assist in creating the VPC.
 - Name the VPC, subnets, route tables, and network connections.
 - Keep the IPv4 CIDR block.
 - Keep the IPv6 CIDR block option as None.
 - Select the default location.
+
 ![VPC_ASSISTENTE_PADRAO](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/VPC_ASSISTENTE_PADRAO.png)
+
 - Select the Number of Availability Zones as two.
 - Select the Number of public and private subnets as two.
+
 ![VPC_ASSISTENTE_AZ](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/VPC_ASSISTENTE_AZ.png)
+
 - Select the NAT gateways as None.
 - Select the VPC endpoint as the S3 Gateway.
+
 ![VPC_ASSISTENTE_GATEWAY](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/VPC_ASSISTENTE_GATEWAY.png)
+
 - Enable DNS hostnames and DNS resolution.
+
 ![VPC_ASSISTENTE_DNS](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/VPC_ASSISTENTE_DNS.png)
+
 - Click on `Create VPC`.
 
 ### Creating a Security Group
 - In the EC2 menu, search for Security Group in the left navigation bar.
+
 ![SC_BARRA](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/SC_BARRA.png)
+
 - Access it and click on `Create Security Group`.
 - In the Security Group creation menu, give a name and description to the Security Group.
 - AIn the same Security Group creation menu, select the VPC created earlier.
@@ -109,38 +123,60 @@ UDP personalizado | UDP | 111 | 0.0.0.0/0 | RPC
 TCP personalizado | TCP | 2049 | 0.0.0.0/0 | NFS
 UDP personalizado | UDP | 2049 | 0.0.0.0/0 | NFS
 - Keep the default outbound rule to allow all traffic.
+
 ![SC_MENU](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/SC_MENU.png)
+
 - Click on `Create Security Group` to finish.
 
 
 ### Criando uma instancia EC2 na AWS
 - In AWS, search for the EC2 service and access it.
+
 ![EC2_APP](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_APP.png)
+
 - Click on `Launch Instance`.
 - In the Name and Tags Configuration tab, add the necessary name and tags.
+
 ![EC2_TAGS](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_TAGS.png)
+
 - In the application and operating system images, search and select Amazon Linux 2.
+
 ![EC2_LINUX](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_LINUX.png)
+
 - In the Instance Type, select the t3.small instance.
+
 ![EC2_INSTANCE](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_INSTANCE.png)
+
 - Select the previously created key pair.
+
 ![EC2_KEYPAIR](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_KEYPAIR.png)
+
 - In the Network Configuration, select the previously created VPC.
+
 ![EC2_SC](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_SC.png)
+
 - Still in the Network Configuration, select the previously created security group.
+
 ![EC2_SC](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_SC.png)
+
 - In the Configure Storage tab, select a 16GB gp2 default disk.
+
 ![EC2_HD](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_HD.png)
+
 - After completing the configurations, click on `Launch Instance` to start the creation process.
 - Wait for a few seconds, AWS will create and start the instance.
 **FOTO DA INSTANCIA EM RUNNING**
 
 ### Criando um Elastic IP
 - In the EC2 menu, search for Elastic IP in the left navigation bar.
+
 ![SC_BARRA](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/SC_BARRA.png)
+
 - In the Elastic IP menu, click on `Allocate new address`.
 - Check if the region is correct and IPv4 is selected, and click on `Allocate`.
+
 ![IP_MENU](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/IP_MENU.png)
+
 - In the Elastic IP menu, click on `Actions`, select `Associate Elastic IP address`, check instance, select the previously created instance, and then click on `Associate Elastic IP address`.
 
 ### Accessing the Instance via Putty
@@ -181,9 +217,13 @@ sudo systemctl status httpd
 
 ### Criando um EFS(NSF SERVER)
 - Search for EFS in the Amazon AWS, the scalable NFS file service.
+
 ![EFS_APP](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EFS_APP.png)
+
 - On the EFS page, click on `Create file system`.
+
 ![EFS_MENU](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EFS_MENU.png)
+
 - Choose a name for the EFS and select a VPC (the same as the instance) and click on `Create`.
 **FOTO DA PAGINA DE CONFIG**
 - Once the EFS is created, navigate to the network within the EFS details and change the security group to the one created earlier.
