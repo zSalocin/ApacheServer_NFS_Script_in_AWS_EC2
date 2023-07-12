@@ -113,6 +113,7 @@ ssh-keygen -y -f private_key.pem > chave_publica.pub
 - No menu de criação do Security Group de um nome e uma descrição ao Security Group.
 - Ainda no menu de criação de Segurity Group selecione como VPC a VPC criada anteriormente.
 - Em regras de entrada, adicione regras para liberar as portas necessária conforme a tabela abaixo:
+
 Tipo | Protocolo | Intervalo de portas | Origem | Descrição
 ---|---|---|---|---
 SSH | TCP | 22 | 0.0.0.0/0 | SSH
@@ -122,6 +123,7 @@ TCP personalizado | TCP | 111 | 0.0.0.0/0 | RPC
 UDP personalizado | UDP | 111 | 0.0.0.0/0 | RPC
 TCP personalizado | TCP | 2049 | 0.0.0.0/0 | NFS
 UDP personalizado | UDP | 2049 | 0.0.0.0/0 | NFS
+
 - Em regras de saída mantenha a regra de saída padrão para liberar todo o tráfego.
 
 ![SC_MENU](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/SC_MENU.png)
