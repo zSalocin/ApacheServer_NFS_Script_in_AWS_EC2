@@ -1,4 +1,4 @@
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/README.md)[![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/README_PT-BR.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/README.md)   [![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/README_PT-BR.md)
 
 # Linux Activity
 
@@ -73,31 +73,33 @@ ssh-keygen -y -f private_key.pem > chave_publica.pub
 
 ### Creating a VPC
 - In AWS, search for VPC.
-**FOTO DO APP**
+![VPC_APP](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/VPC_APP.png)
 - In the VPC menu, click on `Create VPC`.
-**FOTO DO MENU**
+![VPC_ASSISTENTE](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/VPC_ASSISTENTE.png)
 - Select the `VPC and more` option in the creation menu to have AWS assist in creating the VPC.
 - Name the VPC, subnets, route tables, and network connections.
 - Keep the IPv4 CIDR block.
 - Keep the IPv6 CIDR block option as None.
-- Select the default tenancy.**FOTO DO ASSISTENTE****FOTO DO ASSISTENTE**
+- Select the default location.
+![VPC_ASSISTENTE_PADRAO](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/VPC_ASSISTENTE_PADRAO.png)
 - Select the Number of Availability Zones as two.
-- Select the Number of public and private subnets as two.**FOTO DO ASSISTENTE**
+- Select the Number of public and private subnets as two.
+![VPC_ASSISTENTE_AZ](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/VPC_ASSISTENTE_AZ.png)
 - Select the NAT gateways as None.
-- Select the VPC endpoint as the S3 Gateway. **FOTO DO ASSISTENTE**
-- Enable DNS hostnames and DNS resolution. **FOTO DO ASSISTENTE**
+- Select the VPC endpoint as the S3 Gateway.
+![VPC_ASSISTENTE_GATEWAY](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/VPC_ASSISTENTE_GATEWAY.png)
+- Enable DNS hostnames and DNS resolution.
+![VPC_ASSISTENTE_DNS](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/VPC_ASSISTENTE_DNS.png)
 - Click on `Create VPC`.
-**FOTO DO ASSISTENTE**
 
-### Criando um SecurityGroup
-- No menu EC2 procure por SecurityGroup na barra de navegação a esquerda.
-**FOTO DA BARRA**
-- Acesse e clique em `Criar novo grupo de segurança`.
-**FOTO DA PAGINA C O BOTAO**
-- No menu de criação do SecurityGroup de um nome e uma descrição ao SecurityGroup.
-- Ainda no menu de criação de SegurityGroup selecione como VPC a VPC criada anteriormente.
-- Em regras de entrada, adicione regras para liberar as portas necessaria conforme a tabela abaixo:
-Tipo | Protocolo | Intervalo de portas | Origem | Descrição
+### Creating a Security Group
+- In the EC2 menu, search for Security Group in the left navigation bar.
+![SC_BARRA](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/SC_BARRA.png)
+- Access it and click on `Create Security Group`.
+- In the Security Group creation menu, give a name and description to the Security Group.
+- AIn the same Security Group creation menu, select the VPC created earlier.
+- In inbound rules, add rules to open the necessary ports according to the table below:
+Type | Protocol | Port Range | Source | Description
 ---|---|---|---|---
 SSH | TCP | 22 | 0.0.0.0/0 | SSH
 TCP personalizado | TCP | 80 | 0.0.0.0/0 | HTTP
@@ -106,133 +108,130 @@ TCP personalizado | TCP | 111 | 0.0.0.0/0 | RPC
 UDP personalizado | UDP | 111 | 0.0.0.0/0 | RPC
 TCP personalizado | TCP | 2049 | 0.0.0.0/0 | NFS
 UDP personalizado | UDP | 2049 | 0.0.0.0/0 | NFS
-- Em regras de saída mantenha a regra de saída padrão para liberar todo o trafego.
-**FOTO DO MENU DE SECURTY GROUP**
-- Para finalizar clique em `Criar grupo de segurança`.
+- Keep the default outbound rule to allow all traffic.
+![SC_MENU](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/SC_MENU.png)
+- Click on `Create Security Group` to finish.
 
 
 ### Criando uma instancia EC2 na AWS
-- Na AWS busque pelo serviço de EC2 e acesse.
-- Clique em `executar uma instancia`.
-**FOTO DO PAINEL EC2**
-- Na aba de Configuração Nome e Tags adione o nome e tags necessarias.
-**FOTO TAGS**
-- Em imagens de aplicação e de sistema operacional, busque e selecione Amazon Linux 2.
-**FOTO DO LINUX 2**
-- Em Tipo de instância selecione a instancia t3.small.
-**FOTO INSTANCIA**
-- Selecione o par de chave criado previamente.
-**FOTO PAR DE CHAVE**
-- Em Configuração de Rede Selecione a VPC criada anteriormente.
-**FOTO DA VPC**
-- Ainda em Configuração de Rede selecione o grupo de segurança criado anteriormente.
-**FOTO DO GRUPO DE SEGURAÇA**
-- Na aba Configurar armazenamento selecione um disco de 16GB padrão gp2.
-**FOTO DO DISCO**
-- Ao terminar as configurações basta clicar em `Executar Instância` para iniciar a criação.
-**FOTO DA INICIALIZAÇÃO**
-- Aguarde alguns segundos, a AWS ira criar e iniciar a instancia.
+- In AWS, search for the EC2 service and access it.
+![EC2_APP](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_APP.png)
+- Click on `Launch Instance`.
+- In the Name and Tags Configuration tab, add the necessary name and tags.
+![EC2_TAGS](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_TAGS.png)
+- In the application and operating system images, search and select Amazon Linux 2.
+![EC2_LINUX](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_LINUX.png)
+- In the Instance Type, select the t3.small instance.
+![EC2_INSTANCE](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_INSTANCE.png)
+- Select the previously created key pair.
+![EC2_KEYPAIR](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_KEYPAIR.png)
+- In the Network Configuration, select the previously created VPC.
+![EC2_SC](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_SC.png)
+- Still in the Network Configuration, select the previously created security group.
+![EC2_SC](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_SC.png)
+- In the Configure Storage tab, select a 16GB gp2 default disk.
+![EC2_HD](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_HD.png)
+- After completing the configurations, click on `Launch Instance` to start the creation process.
+- Wait for a few seconds, AWS will create and start the instance.
 **FOTO DA INSTANCIA EM RUNNING**
 
 ### Criando um Elastic IP
-- No menu EC2 procure no menu de servicos a esquerda pelo servico Elastic IP.
-**FOTO DO MENU**
-- No menu de Elastic IP clique em alocar endereço IP elástico.
-**FOTO DO MENU DE IP**
-- No menu de crição verifique se a região está correta e IPv4 está selecionado, e clique em alocar.
-**FOTO DA CRIAÇÃO**
-**EDITAR CASO NECESSARIO**
-- No menu de Elastic IP clique em `Ações` selecione Associar endereço IP elástico, marque instancia e selecione a instancia criada previamente após isso clique em `Associar endereço de IP elástico`.
+- In the EC2 menu, search for Elastic IP in the left navigation bar.
+![SC_BARRA](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/SC_BARRA.png)
+- In the Elastic IP menu, click on `Allocate new address`.
+- Check if the region is correct and IPv4 is selected, and click on `Allocate`.
+![IP_MENU](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/IP_MENU.png)
+- In the Elastic IP menu, click on `Actions`, select `Associate Elastic IP address`, check instance, select the previously created instance, and then click on `Associate Elastic IP address`.
 
-### Acessando a instancia via Putty
-- Baixe e instale o [Putty](https://www.putty.org/).
-- Em `Session` no campo Host Name, insira o public DNS(IPv4) da instancia EC2.
-- Acesse `Connecrion` > `SSH` > `Auth` > `Credentials` e no campo `Private key file for authentication` selecione o arquivo .ppk da chave criada previamente.
+### Accessing the Instance via Putty
+- Download and install [Putty](https://www.putty.org/).
+- In `Session`, enter the public DNS (IPv4) of the EC2 instance in the Host Name field.
+- Access `Connection` > `SSH` > `Auth` > `Credentials` and in the `Private key file for authentication` field, select the .ppk file of the previously created key.
 
-### Acessando a instancia via SSH
-- E necessario ter instalado o OpenSSH client, para instalar execute:
+### Accessing the Instance via SSH
+- You need to have the OpenSSH client installed. To install it, execute the command:
 ```
 sudo yum install openssh-clients
 ```
-- Tendo o OpenSSH instalado execute o comando:
+- Once you have OpenSSH installed, use the following command to access the instance:
 ```
 ssh -i private_key.pem user@public_ip_or_dns
 ```
-- `private_key.pem` = caminho para a chave .pem
-- `user@public_ip_or_dns` = public DNS(IPv4) ou DNS da instancia EC2.
+- `private_key.pem` = path to the .pem key
+- `user@public_ip_or_dns` = EC2 instance's public DNS (IPv4) or DNS.
 
-### Instalando Apache em uma intancia EC2
-- Ao logar na instancia execute o comando abaixo para ganhar acesso como root.
+### Installing Apache on an EC2 Instance
+- After logging into the instance, use the following command to gain root access:
 ```
 sudo su
 ```
-- Execute o comando para instalar o apache server e suas dependencias:
+- Execute the command to install the Apache server and its dependencies:
 ```
 sudo yum install -y httpd
 ```
-- Executando depois disso o comando para iniciar o apache server:
+- After that, execute the command to start the Apache server:
 ```
 sudo systemctl enable --now httpd.service
 ```
-- Execute para verificar o status do apache server:
+- Use the following command to check the status of the Apache server:
 ```
 sudo systemctl status httpd
 ```
-- Caso o servidor esteja rodando corretamente agora deve ser possivel acessar a pagina de teste do apache atraves do ip elastico anexado a instancia.
+- If the server is running correctly, it should be possible to access the Apache test page using the elastic IP attached to the instance.
 
 ### Criando um EFS(NSF SERVER)
-- Busque por EFS na amazon AWS o serviço de arquivos de NFS escalavel da AWS.
-**FOTO da aba**
-- Na Pagina de EFS clique em `Criar sistema de arquivos`.
-**FOTO DA PAGINA**
-- Escolha um nome para o EFS e selecione uma VPC(a mesma da instancia) e clique em `Criar`.
+- Search for EFS in the Amazon AWS, the scalable NFS file service.
+![EFS_APP](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EFS_APP.png)
+- On the EFS page, click on `Create file system`.
+![EFS_MENU](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EFS_MENU.png)
+- Choose a name for the EFS and select a VPC (the same as the instance) and click on `Create`.
 **FOTO DA PAGINA DE CONFIG**
-- Uma vez criado o EFS navegue ate network dentro dos detalhes do EFS e altere os security group para aquele que foi criado anteriormente.
+- Once the EFS is created, navigate to the network within the EFS details and change the security group to the one created earlier.
 **FOTOS DO CAMINHO E OPERAÇÃO**
 
-### Criando uma pasta compartilhada EFS EC2
-- Acesse a instancia, e digite o comando para instalar as dependencias necessarias para acessar o EFS na instancia do EC2:
+### Creating a Shared EFS EC2 Folder
+- Access the instance and execute the command to install the necessary dependencies to access the EFS on the EC2 instance:
 ```
 sudo yum install -y amazon-efs-utils
 ```
-- Uma vez que a instalação foi concluida, crie um diretorio para compartilhar entre a instancia EC2 e o EFS atraves do comando:
+- Once the installation is complete, create a directory to share between the EC2 instance and the EFS using the command:
 ```
 sudo mkdir /home/ec2-user/efs
 ```
-- E necessario montar o EFS no diretorio atraves do comando:
+- EMount the EFS to the directory using the command:
 ```
 sudo mount -t efs <EFS_FILE_SYSTEM_ID>:/ /home/ec2-user/efs
 ```
-- `<EFS_FILE_SYSTEM_ID>` = o ID do EFS e composto por fs-xxxxxxxxx, ate o .efs.
+- `<EFS_FILE_SYSTEM_ID>` = the EFS ID in the format fs-xxxxxxxxx, up to the .efs.
 
-- Uma vez concluido o processo de montagem do EFS crie um diretorio para armazenar os logs dentro do EFS com o comando:
+- After the EFS is mounted, create a directory to store logs within the EFS using the command:
 ```
 sudo mkdir /home/ec2-user/efs/logs
 ```
 
-### Criando um Script
-- Crie um arquivo .sh para criar o script e abra-o com o editor de texto padrao atraves do comando:
+### Creating a Script
+- Create a .sh file to create the script and open it with the default text editor using the command:
 ```
 vi check.sh
 ```
-- Precione "i" para entrar no modo edicao do editor.
-- Copie o script feito anteriormente no editor de texto.
-- Feche o editor de texto, para isso precione "esc" para entrar no modo de comando, digite wq e precione enter.
-- Habilite as permissaos necessarias para o Script, para isso execute o comando:
+- Press "i" to enter the editor's edit mode.
+- Copy the previously made script into the text editor.
+- Close the text editor by pressing "esc" to enter command mode, type wq, and press enter.
+- Grant the necessary permissions to the script using the command:
 ```
 sudo chmod 777 check.sh
 ```
-- Teste a execucao do script executando-o pelo comando:
+- Test the script execution by running it using the command:
 ```
 sudo ~/check.sh
 ```
 
-### Utilizando Contrab para automatizar a execução do Script
+### Using Cron to Automate Script Execution
 - Abra o crontab atraves do comando: 
 ```
 crontab -e
 ```
-- Precione "i" para entrar no modo edicao do editor.
-- Cole `*/5 * * * * user Path_to_Script.sh`
-- Substitua `user` pelo usuario desejado
-- `Path_to_Script.sh` pelo caminho até o Script
+- Press "i" to enter the editor's edit mode.
+- Copy `*/5 * * * * user Path_to_Script.sh`
+- Replace `user` with the desired user.
+- Replace `Path_to_Script.sh` with the path to the script.
