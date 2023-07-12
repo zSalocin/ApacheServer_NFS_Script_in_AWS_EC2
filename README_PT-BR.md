@@ -1,6 +1,4 @@
-[![en](https://img.shields.io/badge/lang-en-green.svg)](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/README.md)
-
-[![pt-br](https://img.shields.io/badge/lang-pt--br-red.svg)](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/README.PT-BR.md)
+[![en](https://img.shields.io/badge/lang-en-green.svg)](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/README.md)[![pt-br](https://img.shields.io/badge/lang-pt--br-red.svg)](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/README_PT-BR.md)
 
 # Atividade Linux
 
