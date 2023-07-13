@@ -203,10 +203,6 @@ ssh -i private_key.pem user@public_ip_or_dns
 - `user@public_ip_or_dns` = EC2 instance's public DNS (IPv4) or DNS.
 
 ### Installing Apache on an EC2 Instance
-- After logging into the instance, use the following command to gain root access:
-```
-sudo su
-```
 - Execute the command to install the Apache server and its dependencies:
 ```
 sudo yum install -y httpd

@@ -203,10 +203,6 @@ ssh -i private_key.pem user@public_ip_or_dns
 - `user@public_ip_or_dns` = public DNS(IPv4) ou DNS da instância EC2.
 
 ### Instalando Apache em uma instância EC2
-- Ao logar na instância execute o comando abaixo para ganhar acesso como root:
-```
-sudo su
-```
 - Execute o comando para instalar o apache server e suas dependências:
 ```
 sudo yum install -y httpd
