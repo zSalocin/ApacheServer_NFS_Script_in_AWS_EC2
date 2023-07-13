@@ -167,7 +167,8 @@ ssh-keygen -y -f private_key.pem > chave_publica.pub
 
 - Ao terminar as configurações basta clicar em `Executar Instância` para iniciar a criação.
 - Aguarde alguns segundos, a AWS irá criar e iniciar a instância.
-**FOTO DA INSTANCIA EM RUNNING**
+
+![EC2_RUNNING](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EC2_RUNNING.png)
 
 ### Criando um Elastic IP
 - No menu EC2 procure no menu de serviços a esquerda pelo serviços Elastic IP.
@@ -181,9 +182,12 @@ ssh-keygen -y -f private_key.pem > chave_publica.pub
 
 - No menu de Elastic IP clique em `Ações` selecione Associar endereço IP elástico, marque instância e selecione a instância criada previamente após isso clique em `Associar endereço de IP elástico`.
 
+![IP_ASSOCIAR](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/IP_ASSOCIAR.png)
+
 ### Acessando a instância via Putty
 - Baixe e instale o [Putty](https://www.putty.org/).
 - Em `Session` no campo Host Name, insira o public DNS(IPv4) da instância EC2.
+- Acesse `Connection` > `Data` e no campo `Auto-login username`, digite `ec2-user`.
 - Acesse `Connection` > `SSH` > `Auth` > `Credentials` e no campo `Private key file for authentication` selecione o arquivo .ppk da chave criada previamente.
 
 ### Acessando a instância via SSH
@@ -223,13 +227,17 @@ sudo systemctl status httpd
 ![EFS_APP](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EFS_APP.png)
 
 - Na Página de EFS clique em `Criar sistema de arquivos`.
+- Escolha um nome para o EFS e selecione uma VPC(a mesma da instância) e clique em `Criar`.
 
 ![EFS_MENU](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EFS_MENU.png)
 
-- Escolha um nome para o EFS e selecione uma VPC(a mesma da instância) e clique em `Criar`.
-**FOTO DA PAGINA DE CONFIG**
-- Uma vez criado o EFS navegue até network dentro dos detalhes do EFS e altere os security group para aquele que foi criado anteriormente.
-**FOTOS DO CAMINHO E OPERAÇÃO**
+- Acesse a pagina de configuração do EFS
+
+![EFS_CONFIG](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EFS_CONFIG.png)
+
+- Uma vez criado o EFS navegue até network, e acesse gerenciar dentro dos detalhes do EFS e altere os security group para aquele que foi criado anteriormente.
+
+![EFS_NETWORK_SC](https://github.com/zSalocin/ApacheServer_NFS_Script_in_AWS_EC2/blob/main/Assets/EFS_NETWORK_SC.png)
 
 ### Criando uma pasta compartilhada EFS EC2
 - Acesse a instância, e digite o comando para instalar as dependencias necessárias para acessar o EFS na instância do EC2:
@@ -261,11 +269,11 @@ vi check.sh
 - Feche o editor de texto, para isso pressione "esc" para entrar no modo de comando, digite wq e pressione enter.
 - Habilite as permissões necessárias para o Script, para isso execute o comando:
 ```
-sudo chmod 777 check.sh
+sudo chmod +x check.sh
 ```
 - Teste a execução do script executando-o pelo comando:
 ```
-sudo ~/check.sh
+sudo /home/ec2-user/check.sh
 ```
 
 ### Utilizando Crontab para automatizar a execução do Script
@@ -274,6 +282,13 @@ sudo ~/check.sh
 crontab -e
 ```
 - Pressione "i" para entrar no modo edição do editor.
-- Cole `*/5 * * * * user Path_to_Script.sh`.
-- Substitua `user` pelo usuário desejado.
-- Substitua `Path_to_Script.sh` pelo caminho até o Script.
+- Digite `*/5 * * * * /home/ec2-user/check.sh`.
+- Substitua `/home/ec2-user/check.sh` pelo caminho até o Script.
+- Verifique se o serviço cron esta sendo executado:
+```
+sudo systemctl status crond
+```
+- Caso o serviço não esteja em exeução, inicie-o com o comando abaixo: 
+```
+sudo systemctl start crond
+```
