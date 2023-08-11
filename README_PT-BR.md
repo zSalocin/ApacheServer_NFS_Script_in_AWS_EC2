@@ -255,6 +255,20 @@ sudo mount -t efs <EFS_FILE_SYSTEM_ID>:/ /home/ec2-user/efs
 sudo mkdir /home/ec2-user/efs/logs
 ```
 
+#### Para tornar a montagem persistente, siga estes passos:
+- Acesse o arquivo /etc/fstab usando o comando:
+```
+sudo nano /etc/fstab
+```
+- No interior do arquivo, adicione a seguinte linha no final:
+```
+<DNS_NAME_DO_EFS>:/ /mnt/efs nfs4 defaults 0 0
+```
+- Para confirmar, leia o arquivo /etc/fstab usando o comando:
+```
+cat /etc/fstab
+```
+
 ### Criando um Script
 - Crie um arquivo .sh para criar o script e abra-o com o editor de texto padrão através do comando:
 ```
