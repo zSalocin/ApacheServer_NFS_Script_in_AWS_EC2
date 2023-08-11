@@ -244,16 +244,31 @@ sudo yum install -y amazon-efs-utils
 ```
 sudo mkdir /home/ec2-user/efs
 ```
-- EMount the EFS to the directory using the command:
+- Mount the EFS to the directory using the command:
 ```
-sudo mount -t efs <EFS_FILE_SYSTEM_ID>:/ /home/ec2-user/efs
+sudo mount -t efs <DNS_NAME_DO_EFS>:/ /home/ec2-user/efs
 ```
-- `<EFS_FILE_SYSTEM_ID>` = the EFS ID in the format fs-xxxxxxxxx, up to the .efs.
+- `<DNS_NAME_DO_EFS>:` = the EFS ID in the format fs-xxxxxxxxx, up to the .efs.
 
 - After the EFS is mounted, create a directory to store logs within the EFS using the command:
 ```
 sudo mkdir /home/ec2-user/efs/logs
 ```
+
+#### To make the mount persistent, follow these steps:
+- Access the /etc/fstab file using the command:
+```
+sudo nano /etc/fstab
+```
+- Inside the file, add the following line at the end:
+```
+<DNS_NAME_DO_EFS>:/ /mnt/efs nfs4 defaults 0 0
+```
+- To confirm, read the /etc/fstab file using the command:
+```
+cat /etc/fstab
+```
+
 
 ### Creating a Script
 - Create a .sh file to create the script and open it with the default text editor using the command:
