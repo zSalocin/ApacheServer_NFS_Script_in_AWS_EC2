@@ -258,7 +258,7 @@ sudo mkdir /home/ec2-user/efs/logs
 #### To make the mount persistent, follow these steps:
 - Access the /etc/fstab file using the command:
 ```
-sudo nano /etc/fstab
+sudo vi /etc/fstab
 ```
 - Inside the file, add the following line at the end:
 ```

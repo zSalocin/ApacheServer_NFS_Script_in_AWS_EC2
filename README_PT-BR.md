@@ -258,7 +258,7 @@ sudo mkdir /home/ec2-user/efs/logs
 #### Para tornar a montagem persistente, siga estes passos:
 - Acesse o arquivo /etc/fstab usando o comando:
 ```
-sudo nano /etc/fstab
+sudo vi /etc/fstab
 ```
 - No interior do arquivo, adicione a seguinte linha no final:
 ```
