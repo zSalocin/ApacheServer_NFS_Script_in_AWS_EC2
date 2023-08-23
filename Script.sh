@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Specify the log file directory
-LOG_DIR="/home/ec2-user/efs/logs/"
+LOG_DIR="/mnt/efs/logs/"
 
 # Create a log file name with the current date
 DATE=$(date +"%Y%m%d")

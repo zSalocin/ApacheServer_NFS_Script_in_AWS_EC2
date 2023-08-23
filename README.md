@@ -242,17 +242,17 @@ sudo yum install -y amazon-efs-utils
 ```
 - Once the installation is complete, create a directory to share between the EC2 instance and the EFS using the command:
 ```
-sudo mkdir /home/ec2-user/efs
+sudo mkdir /mnt/efs
 ```
 - Mount the EFS to the directory using the command:
 ```
-sudo mount -t efs <DNS_NAME_DO_EFS>:/ /home/ec2-user/efs
+sudo mount -t efs <DNS_NAME_DO_EFS>:/ /mnt/efs
 ```
 - `<DNS_NAME_DO_EFS>:` = the EFS ID in the format fs-xxxxxxxxx, up to the .efs.
 
 - After the EFS is mounted, create a directory to store logs within the EFS using the command:
 ```
-sudo mkdir /home/ec2-user/efs/logs
+sudo mkdir /mnt/efs/logs
 ```
 
 #### To make the mount persistent, follow these steps:
